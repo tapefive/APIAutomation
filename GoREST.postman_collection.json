@@ -3,8 +3,7 @@
 		"_postman_id": "96ac6319-f352-452a-94c5-abd0476707d2",
 		"name": "GoREST",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33345286",
-		"_collection_link": "https://www.postman.com/seang1981/workspace/api-automation/collection/33345286-96ac6319-f352-452a-94c5-abd0476707d2?action=share&source=collection_link&creator=33345286"
+		"_exporter_id": "33345286"
 	},
 	"item": [
 		{
@@ -289,6 +288,106 @@
 						"v2",
 						"users",
 						"1234567"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User 422 error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response is an array\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Array contains at least one object\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length).to.be.at.least(2);\r",
+							"    pm.expect(jsonData[0]).to.be.an(\"object\");\r",
+							"    pm.expect(jsonData[1]).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"First object has 'field' and 'message' properties\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"field\");\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"message\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Second object has 'field' and 'message' properties\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[1]).to.have.property(\"field\");\r",
+							"    pm.expect(jsonData[1]).to.have.property(\"message\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"First object field is 'email' and message is 'can't be blank'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].field).to.eql(\"email\");\r",
+							"    pm.expect(jsonData[0].message).to.eql(\"can't be blank\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Second object field is 'name' and message is 'can't be blank'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[1].field).to.eql(\"name\");\r",
+							"    pm.expect(jsonData[1].message).to.eql(\"can't be blank\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate random values\r",
+							"const randomName = `Test User ${Math.floor(Math.random() * 100) + 1}`; // Random user name\r",
+							"const randomGender = Math.random() > 0.5 ? \"male\" : \"female\"; // Random gender\r",
+							"const randomEmail = `testuser${Math.floor(Math.random() * 1000)}@apiautomation.com`; // Random email\r",
+							"const randomStatus = Math.random() > 0.5 ? \"active\" : \"inactive\"; // Random status\r",
+							"\r",
+							"// Set the variables\r",
+							"pm.environment.set(\"randomName\", randomName);\r",
+							"pm.environment.set(\"randomGender\", randomGender);\r",
+							"pm.environment.set(\"randomEmail\", randomEmail);\r",
+							"pm.environment.set(\"randomStatus\", randomStatus);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"{{randomName}}\",\r\n    \"gender\": \"{{randomGender}}\",\r\n    \"emailaddress\": \"{{randomEmail}}\",\r\n    \"status\": \"{{randomStatus}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/public/v2/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
 					]
 				}
 			},
