@@ -219,18 +219,6 @@
 		{
 			"name": "Delete User",
 			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 204\", function () {\r",
-							"    pm.response.to.have.status(204);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
 			],
 			"request": {
 				"method": "DELETE",
