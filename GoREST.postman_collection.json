@@ -1,0 +1,252 @@
+{
+	"info": {
+		"_postman_id": "96ac6319-f352-452a-94c5-abd0476707d2",
+		"name": "Go REST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33345286",
+		"_collection_link": "https://www.postman.com/seang1981/workspace/api-automation/collection/33345286-96ac6319-f352-452a-94c5-abd0476707d2?action=share&source=collection_link&creator=33345286"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains expected fields\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    \r",
+							"    // Verify the structure and data types of the fields\r",
+							"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"number\");\r",
+							"    pm.expect(responseJson).to.have.property(\"name\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"email\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"gender\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"status\").that.is.a(\"string\");\r",
+							"\r",
+							"});\r",
+							"\r",
+							"// Save the user ID to an environment variable\r",
+							"pm.test(\"Save user ID to environment variable\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.environment.set(\"userId\", responseJson.id); // Save the `id` as `userId`\r",
+							"    console.log(\"User ID saved to environment variable: \" + responseJson.id);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate random values\r",
+							"const randomName = `Test User ${Math.floor(Math.random() * 100) + 1}`; // Random user name\r",
+							"const randomGender = Math.random() > 0.5 ? \"male\" : \"female\"; // Random gender\r",
+							"const randomEmail = `testuser${Math.floor(Math.random() * 1000)}@apiautomation.com`; // Random email\r",
+							"const randomStatus = Math.random() > 0.5 ? \"active\" : \"inactive\"; // Random status\r",
+							"\r",
+							"// Set the variables\r",
+							"pm.environment.set(\"randomName\", randomName);\r",
+							"pm.environment.set(\"randomGender\", randomGender);\r",
+							"pm.environment.set(\"randomEmail\", randomEmail);\r",
+							"pm.environment.set(\"randomStatus\", randomStatus);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{randomName}}\",\r\n    \"gender\": \"{{randomGender}}\",\r\n    \"email\": \"{{randomEmail}}\",\r\n    \"status\": \"{{randomStatus}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/public/v2/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains expected fields\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    \r",
+							"    // Verify the structure and data types of the fields\r",
+							"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"number\");\r",
+							"    pm.expect(responseJson).to.have.property(\"name\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"email\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"gender\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"status\").that.is.a(\"string\");\r",
+							"\r",
+							"});\r",
+							"\r",
+							"// Save the user ID to an environment variable\r",
+							"pm.test(\"Save user ID to environment variable\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.environment.set(\"userId\", responseJson.id); // Save the `id` as `userId`\r",
+							"    console.log(\"User ID saved to environment variable: \" + responseJson.id);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/public/v2/users/{{userId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains expected fields\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    \r",
+							"    // Verify the structure and data types of the fields\r",
+							"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"number\");\r",
+							"    pm.expect(responseJson).to.have.property(\"name\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"email\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"gender\").that.is.a(\"string\");\r",
+							"    pm.expect(responseJson).to.have.property(\"status\").that.is.a(\"string\");\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate random values\r",
+							"const randomName = `Test User ${Math.floor(Math.random() * 100) + 1}`; // Random user name\r",
+							"const randomGender = Math.random() > 0.5 ? \"male\" : \"female\"; // Random gender\r",
+							"const randomEmail = `testuser${Math.floor(Math.random() * 1000)}@apiautomation.com`; // Random email\r",
+							"const randomStatus = Math.random() > 0.5 ? \"active\" : \"inactive\"; // Random status\r",
+							"\r",
+							"// Set the variables\r",
+							"pm.environment.set(\"randomName\", randomName);\r",
+							"pm.environment.set(\"randomGender\", randomGender);\r",
+							"pm.environment.set(\"randomEmail\", randomEmail);\r",
+							"pm.environment.set(\"randomStatus\", randomStatus);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{randomName}}\",\r\n    \"gender\": \"{{randomGender}}\",\r\n    \"email\": \"{{randomEmail}}\",\r\n    \"status\": \"{{randomStatus}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/public/v2/users/{{userId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
