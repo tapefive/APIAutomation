@@ -207,17 +207,17 @@
 							"    pm.expect(responseJson).to.have.property(\"gender\").that.is.a(\"string\");\r",
 							"    pm.expect(responseJson).to.have.property(\"status\").that.is.a(\"string\");\r",
 							"\r",
-							"});\r",
-							"\r",
-							"// Save the user ID to an environment variable\r",
-							"pm.test(\"Save user ID to environment variable\", function () {\r",
-							"    const responseJson = pm.response.json();\r",
-							"    pm.environment.set(\"userId\", responseJson.id); // Save the `id` as `userId`\r",
-							"    console.log(\"User ID saved to environment variable: \" + responseJson.id);\r",
 							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
 					}
 				}
 			],
