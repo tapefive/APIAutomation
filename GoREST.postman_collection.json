@@ -19,7 +19,7 @@
 							"\r",
 							"pm.test(\"Response body contains expected fields\", function () {\r",
 							"    const responseJson = pm.response.json();\r",
-							"    \r",
+							"\r",
 							"    // Verify the structure and data types of the fields\r",
 							"    pm.expect(responseJson).to.have.property(\"id\").that.is.a(\"number\");\r",
 							"    pm.expect(responseJson).to.have.property(\"name\").that.is.a(\"string\");\r",
@@ -34,6 +34,20 @@
 							"    const responseJson = pm.response.json();\r",
 							"    pm.environment.set(\"userId\", responseJson.id); // Save the `id` as `userId`\r",
 							"    console.log(\"User ID saved to environment variable: \" + responseJson.id);\r",
+							"});\r",
+							"\r",
+							"// Save the user name to an environment variable\r",
+							"pm.test(\"Save user name to environment variable\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.environment.set(\"userName\", responseJson.name); // Save the `user name` as `userName`\r",
+							"    console.log(\"User name saved to environment variable: \" + responseJson.name);\r",
+							"});\r",
+							"\r",
+							"// Save the user email to an environment variable\r",
+							"pm.test(\"Save user email to environment variable\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.environment.set(\"userEmail\", responseJson.name); // Save the `user email` as `userEmail`\r",
+							"    console.log(\"User email saved to environment variable: \" + responseJson.email);\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -96,6 +110,13 @@
 						"exec": [
 							"pm.test(\"Status code is 201\", function () {\r",
 							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Save the post ID to an environment variable\r",
+							"pm.test(\"Save post ID to environment variable\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.environment.set(\"postId\", responseJson.id); // Save the `id` as `postId`\r",
+							"    console.log(\"Post ID saved to environment variable: \" + responseJson.id);\r",
 							"});"
 						],
 						"type": "text/javascript",
@@ -472,6 +493,81 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"firstname\": \"{{randomName}}\",\r\n    \"gender\": \"{{randomGender}}\",\r\n    \"emailaddress\": \"{{randomEmail}}\",\r\n    \"status\": \"{{randomStatus}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/public/v2/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User 401 error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains expected fields\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"\r",
+							"    // Verify the structure and data types of the fields\r",
+							"    pm.expect(responseJson).to.have.property(\"message\");\r",
+							"    pm.expect(responseJson.message).to.eql(\"Authentication failed\");\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate random values\r",
+							"const randomName = `Test User ${Math.floor(Math.random() * 100) + 1}`; // Random user name\r",
+							"const randomGender = Math.random() > 0.5 ? \"male\" : \"female\"; // Random gender\r",
+							"const randomEmail = `testuser${Math.floor(Math.random() * 1000)}@apiautomation.com`; // Random email\r",
+							"const randomStatus = Math.random() > 0.5 ? \"active\" : \"inactive\"; // Random status\r",
+							"\r",
+							"// Set the variables\r",
+							"pm.environment.set(\"randomName\", randomName);\r",
+							"pm.environment.set(\"randomGender\", randomGender);\r",
+							"pm.environment.set(\"randomEmail\", randomEmail);\r",
+							"pm.environment.set(\"randomStatus\", randomStatus);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{randomName}}\",\r\n    \"gender\": \"{{randomGender}}\",\r\n    \"email\": \"{{randomEmail}}\",\r\n    \"status\": \"{{randomStatus}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
