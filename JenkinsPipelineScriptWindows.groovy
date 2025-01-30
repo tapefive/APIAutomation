@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'master', url: 'https://github.com/tapefive/Postman-API-Automation'
+                git branch: 'master', url: 'https://github.com/tapefive/APIAutomation'
             }
         }
         stage('Install Dependencies') {
